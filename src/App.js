@@ -1,29 +1,25 @@
-const Pet = ({ name, animal, breed }) => {
-  return React.createElement("div", {}, [
-    React.createElement("h1", {}, name),
-    React.createElement("h2", {}, animal),
-    React.createElement("h2", {}, breed),
-  ]);
-};
-
+import React, { StrictMode, useState } from "react";
+import { render } from "react-dom";
+import SearchParams from "./SearchParams";
+import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
+import WrappedComponent from "./Details";
+import ThemeContext from "./ThemeContext";
 const App = () => {
-  return React.createElement("div", {}, [
-    React.createElement("h1", { id: "bbb" }, "Adopt ME!"),
-    React.createElement(Pet, {
-      name: "luna",
-      animal: "dog",
-      breed: "havaneese",
-    }),
-    React.createElement(Pet, {
-      name: "max",
-      animal: "dog",
-      breed: "german shepard",
-    }),
-    React.createElement(Pet, {
-      name: "doink",
-      animal: "cat",
-      breed: "catbreed",
-    }),
-  ]);
+  const theme = useState("darkblue");
+  return (
+    <ThemeContext.Provider value={theme}>
+      <StrictMode>
+        <BrowserRouter>
+          <header>
+            <Link to={"/"}>Adopt me!</Link>
+          </header>
+          <Routes>
+            <Route path="/details/:id" element={<WrappedComponent />} />
+            <Route path="/" element={<SearchParams />} />
+          </Routes>
+        </BrowserRouter>
+      </StrictMode>
+    </ThemeContext.Provider>
+  );
 };
-ReactDOM.render(React.createElement(App), document.getElementById("root"));
+render(<App />, document.getElementById("root"));
